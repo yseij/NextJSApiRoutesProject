@@ -14,7 +14,6 @@ async function handler(req, res) {
       res.status(422).json({ message: "invalid input" });
       return;
     }
-    console.log(eventId);
 
     const newComment = {
       email,
@@ -24,19 +23,22 @@ async function handler(req, res) {
     };
 
     const db = client.db();
-    const result = await db.collection("comments").insertOne({ newComment });
+    const result = await db.collection("comments").insertOne(newComment);
     console.log(result);
+    newComment.id = result.insertedId;
     res.status(201).json({ message: "Comment is set", comment: newComment });
   }
 
   if (req.method === "GET") {
-    const dummyList = [
-      { id: "c1", name: "max", text: "tekst c1" },
-      { id: "c2", name: "youri", text: "tekst c2" },
-      { id: "c3", name: "ken", text: "tekst c3" },
-    ];
-
-    res.status(201).json({ comments: dummyList });
+    console.log("hier");
+    const db = client.db();
+    const documents = await db
+      .collection("comments")
+      .find()
+      .sort({ _id: -1 })
+      .toArray();
+    console.log(documents);
+    res.status(200).json({ comments: documents });
   }
 
   client.close();
