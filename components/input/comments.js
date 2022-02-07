@@ -26,8 +26,6 @@ function Comments(props) {
   }
 
   function addCommentHandler(commentData) {
-    console.log(commentData.email);
-    console.log(eventId);
     fetch("/api/comments/" + eventId, {
       method: "POST",
       body: JSON.stringify(commentData),
