@@ -1,9 +1,7 @@
 function handler(req, res) {
   const eventId = req.body.eventId;
   if (req.method === "POST") {
-    const email = req.body.email;
-    const name = req.body.name;
-    const text = req.body.text;
+    const { email, name, text } = req.body;
 
     if (!email.includes("@") || !name || !name.trim() === "" || !text) {
       res.status(422).json({ message: "invalid input" });
@@ -27,7 +25,7 @@ function handler(req, res) {
       { id: "c3", name: "ken", text: "tekst c3" },
     ];
 
-    res.status(201).json({comment: dummyList });
+    res.status(201).json({ comments: dummyList });
   }
 }
 
